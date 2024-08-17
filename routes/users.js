@@ -4,8 +4,10 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Todo: later moving to .env file
-const JWT_SECRET = 'DUMMEY_JWT_KEY';
+// Load environment variables
+require('dotenv').config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // User sign-up
 router.post('/signup', async (req, res) => {
@@ -53,8 +55,9 @@ router.post('/signin', async (req, res) => {
 
 // Get user profile
 router.get('/profile', async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
+    
     try {
+        const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, JWT_SECRET);
         const user = await User.findById(decoded.userId).select('-password');
         if (!user) {

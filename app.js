@@ -11,9 +11,11 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// Load environment variables
+require('dotenv').config();
 
 // DB Connection
-const mongoDB = 'mongodb://localhost:27017/competitionlk_db';
+const mongoDB = process.env.MONGO_URI;
 
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
